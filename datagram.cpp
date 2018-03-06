@@ -8,40 +8,33 @@
 using namespace std;
 
 IPAddress::IPAddress() {
-    for(int i = 0; i < 4; i++)
-    {
+    for(int i = 0; i < 4; i++) {
         a[i] = 0;
     }
 }
 
 int IPAddress::parse(string s) {
     	
-	int i, j;
+    int i, j;
     unsigned int tmp;
 	
     j = 0;
 	for(i=0; i<4; i++) {
 		tmp = 0;
-		while ( (s[j]>='0') && (s[j]<='9') )
-            tmp = 10*tmp + (s[j++]-'0');
-		if(tmp<256)
-            a[i] = tmp;
-		else  //we found a bad IP addy part, so 0 them all out, return error
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                a[k] = 0;
-            }
-            return BAD_IP_ADDRESS;
-        }
+		while ( (s[j]>='0') && (s[j]<='9') ) tmp = 10*tmp + (s[j++]-'0');
+		if(tmp<256) a[i] = tmp;
+		else {  //we found a bad IP addy part, so 0 them all out, return error
+        		for (int k = 0; k < 4; k++) {
+                		a[k] = 0;
+            		}
+            		return BAD_IP_ADDRESS;
+        	}
 		j++;
 	}
-	
 	return 0;
 }
 
 void IPAddress::display() const{
-	
 	cout << a[0] << "." << a[1] << "." << a[2] << "." << a[3];
 }
 
@@ -62,23 +55,21 @@ int IPAddress::isNULL() {
 }
 
 void datagram::makeDatagram(IPAddress s, IPAddress d, string m) {
-	src = s;
-	dest = d;
+    src = s;
+    dest = d;
     msg = m;
     length = m.length();
 }
 
-IPAddress datagram::destinationAddress()
-{
+IPAddress datagram::destinationAddress() {
     return dest;
 }
 
-int IPAddress::firstOctad()
-{
+int IPAddress::firstOctad() {
     return a[0];
 }
 
-void datagram::display() const{
+void datagram::display() const {
 	cout << "SOURCE: ";
 	src.display();
 	cout << "\nDESTINATION: ";
