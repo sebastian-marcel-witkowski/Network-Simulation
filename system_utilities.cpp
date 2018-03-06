@@ -49,43 +49,36 @@ int parseCommandLine(string line, string tklist[]) {
     int i = 0; //the index of the current character we're looking at
     int numTokens = 0; //the number of tokens we've collected so far
     
-    if (line.length() > MAX_CMD_LINE_LENGTH)
-    {
+    if (line.length() > MAX_CMD_LINE_LENGTH) {
         return 0;
     }
     
     while (i < line.size()) { //while we have more characters to look at
-        if (numTokens > MAX_TOKENS_ON_A_LINE)
-        {
+        if (numTokens > MAX_TOKENS_ON_A_LINE) {
             return 0;
         }
         
-        if (line[i] == ' ')
-        {
+        if (line[i] == ' ') {
             //we've encountered a space, is it a terminating space?
-            if (*accumulator != "" && token_terminator == ' ')
-            {
+            if (*accumulator != "" && token_terminator == ' ') {
                 tklist[numTokens] = *accumulator;
                 *accumulator = "";
                 numTokens++;
-            } else if (*accumulator != "") //if not, it might be inside of quotes
-            {
+            } 
+	    else if (*accumulator != "") {
                 *accumulator += " ";
             }
             i++; //move forward
         }
-        else if (line[i] == '\"')
-        {
+        else if (line[i] == '\"') {
             //we've encountered a quote is it an ending quote?
-            if (*accumulator != "")
-            {
+            if (*accumulator != "") {
                 tklist[numTokens] = *accumulator;
                 *accumulator = "";
                 numTokens++;
                 token_terminator = ' ';
             }
-            else //if not, it must be a starting quote
-            {
+            else { //if not, it must be a starting quote
                 token_terminator = '\"';
             }
             i++;
@@ -97,23 +90,18 @@ int parseCommandLine(string line, string tklist[]) {
     }
     
     //the loop has finished, so if there's stuff left in the accumulator, add it
-    if (*accumulator != "")
-    {
+    if (*accumulator != "") {
         tklist[numTokens] = *accumulator;
         *accumulator = "";
         numTokens++;
     }
-    
-    delete accumulator;
-        
+    delete accumulator;   
     return numTokens;
 }
 
-void print_token_list(int num, string commands[])
-{
+void print_token_list(int num, string commands[]) {
     cout << "Number of tokens: " << num <<endl;
-    for (int k = 0; k < num; k++)
-    {
+    for (int k = 0; k < num; k++) {
         cout << "token: " << commands[k] << "\t";
     }
     cout << endl;
@@ -160,8 +148,7 @@ void fillSystemCommandList() {
 }
 
 void freeSystemCommandList() {
-    for (int i=0; i < NUMBER_OF_COMMANDS; i++)
-    {
+    for (int i=0; i < NUMBER_OF_COMMANDS; i++) {
         delete system_commands[i];
     }
 }
