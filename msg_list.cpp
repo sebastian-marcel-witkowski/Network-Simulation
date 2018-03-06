@@ -2,7 +2,7 @@
 
 #include "msg_list.h"
 
-msg_list::msg_list(){
+msg_list::msg_list() {
 	front = back = NULL;
 }
 
@@ -24,10 +24,8 @@ void msg_list::display() {
 	
 }
 
-datagram* msg_list::returnFront()
-{
+datagram* msg_list::returnFront() {
     if (front == NULL) return NULL;
-    
     msg_list_node* tmp = front;
     datagram* x = tmp->d;
     front = front->next;
@@ -42,17 +40,15 @@ void msg_list::append(datagram *x) {
 	tmp->d = x;
     
 	if(front==NULL)
-        front = tmp;
+        	front = tmp;
 	else
-        back->next = tmp;
-	back = tmp;
+        	back->next = tmp;
+		back = tmp;
 }
 
 /**************new**************/
-void msg_list::deleteList()
-{
-    while (front != NULL)
-    {
+void msg_list::deleteList() {
+    while (front != NULL) {
         msg_list_node* tmp = front;
         front = front->next;
         delete tmp->d;
