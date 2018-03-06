@@ -18,7 +18,6 @@ node::~node() {
 }
 
 void node::display() {
-    
     cout << "   Name: " << *name << "   IP address: ";
     my_address.display();
 }
@@ -34,8 +33,7 @@ int node::myType() {
     return 0;
 }
 
-IPAddress node::myAddress()
-{
+IPAddress node::myAddress() {
     return my_address;
 }
 
@@ -68,8 +66,7 @@ void laptop::connect(IPAddress x, int machine_type) {
     if(machine_type==SERVER) my_server = x;
 }
 
-int laptop::canReceiveDatagram()
-{
+int laptop::canReceiveDatagram() {
     return (incoming==NULL);
 }
 
@@ -79,10 +76,8 @@ void laptop::transferDatagram() {
     
     if(outgoing==NULL) return;
     if(my_server.isNULL()) return;
-    for (i = 0; i < MAX_MACHINES; i++)
-    {
-        if (network[i] != NULL)
-        {
+    for (i = 0; i < MAX_MACHINES; i++) {
+        if (network[i] != NULL) {
             if (network[i]->amIThisComputer(my_server))
                 break;
         }
@@ -107,23 +102,21 @@ void laptop::display() {
     
     cout << "\n   Incoming datagram:  ";
     if(incoming==NULL) cout << "No datagram.";
-    else               {cout << "\n";  incoming->display(); }
+    else {cout << "\n";  incoming->display(); }
     
     cout << "\n   Outgoing datagram:  ";
     if(outgoing==NULL) cout << "No datagram.";
-    else               {cout << "\n"; outgoing->display(); }
+    else {cout << "\n"; outgoing->display(); }
     
 }
 
-void laptop::consumeDatagram()
-{
+void laptop::consumeDatagram() {
     incoming = NULL;
 }
 
 
 /**************new*************/
-laptop::~laptop()
-{
+laptop::~laptop() {
     if (incoming != NULL)
         delete incoming;
     if (outgoing != NULL)
@@ -189,10 +182,8 @@ void server::display() {
     
 }
 
-void server::transferDatagram()
-{
+void server::transferDatagram() {
     extern node* network[MAX_MACHINES];
-    
     datagram *dg;  IPAddress dest;  int octad;
     msg_list *tmp;
     int i, j, k, m, dist, msg_processed;
@@ -211,8 +202,7 @@ void server::transferDatagram()
                 if(laptop_list[i].sameAddress(dest)) {
                     msg_processed = 1;
                     //j = findMachine(dest);
-                    for (j = 0; j < MAX_MACHINES; j++)
-                    {
+                    for (j = 0; j < MAX_MACHINES; j++) {
                         if (network[j] != NULL && network[j]->amIThisComputer(dest))
                             break;
                     }
@@ -231,8 +221,7 @@ void server::transferDatagram()
             k = -1;
             for(i=0; i<number_of_wans; i++) {
                 //j = findMachine(WAN_list[i]);
-                for (j = 0; j < MAX_MACHINES; j++)
-                {
+                for (j = 0; j < MAX_MACHINES; j++) {
                     if (network[j] != NULL && network[j]->amIThisComputer(WAN_list[i]))
                         break;
                 }
@@ -247,22 +236,18 @@ void server::transferDatagram()
                 }
             }
             // At this point, k is the target machine.
-            if(k>=0)
-            {
+            if(k>=0) {
                 network[k]->receiveDatagram(dg);
             }
             else	 tmp->append(dg);
         }
-        
         dg = dlist->returnFront();
     }
-    
     delete dlist;
     dlist = tmp;
 }
 /**************new*************/
-server::~server()
-{
+server::~server() {
     dlist->deleteList();
 }
 /**************new*************/
@@ -346,8 +331,7 @@ void WAN::transferDatagram() {
             if( octad==server_list[i].firstOctad() ) {
                 msg_processed = 1;
                 //j = findMachine(server_list[i]);
-                for (j = 0; j < MAX_MACHINES; j++)
-                {
+                for (j = 0; j < MAX_MACHINES; j++) {
                     if (network[j] != NULL && network[j]->amIThisComputer(server_list[i]))
                         break;
                 }
@@ -362,8 +346,7 @@ void WAN::transferDatagram() {
             k = -1;
             for(i=0; i<number_of_wans; i++) {
                 //j = findMachine(WAN_list[i]);
-                for (j = 0; j < MAX_MACHINES; j++)
-                {
+                for (j = 0; j < MAX_MACHINES; j++) {
                     if (network[j] != NULL && network[j]->amIThisComputer(WAN_list[i]))
                         break;
                 }
@@ -392,8 +375,7 @@ void WAN::transferDatagram() {
 }
 
 /**************new*************/
-WAN::~WAN()
-{
+WAN::~WAN() {
     dlist->deleteList();
 }
 /**************new*************/
